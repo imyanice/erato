@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@layer base {
+	body {
+		@apply min-w-[320px] min-h-screen relative m-0;
+	}
+}
+
+@theme {
+	--shadow-t-xl:
+		0 -20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px
+		rgba(0, 0, 0, 0.04);
+	--shadow-all-sm: 0 0 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-all-md:
+		0 0 6px -1px rgba(0, 0, 0, 0.1), 0 0 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-all-lg:
+		0 0 15px -3px rgba(0, 0, 0, 0.1), 0 0 6px -2px rgba(0, 0, 0, 0.05);
+	--shadow-all-xl:
+		0 0 25px -5px rgba(0, 0, 0, 0.1), 0 0 10px -5px rgba(0, 0, 0, 0.04);
+	--color-card: #fffffe;
+	--color-offwhite: #f2f2f6;
+
+	--animate-enter-down: enter-down 10s;
+	@keyframes enter-down {
+		from {
+			bottom: -20 px;
+		}
+		to {
+			bottom: 0px;
+		}
+	}
+}
+body {
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}

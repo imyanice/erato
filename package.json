@@ -1,0 +1,28 @@
+{
+  "name": "bun-react-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "start": "NODE_ENV=production bun src/index.ts",
+    "build": "bun run build.ts"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "barcode-detector": "^3.1.1",
+    "bun-plugin-tailwind": "^0.1.2",
+    "mongoose": "^9.3.0",
+    "motion": "^12.35.2",
+    "react": "^19",
+    "react-dom": "^19",
+    "swr": "^2.4.1",
+    "tailwindcss": "^4.1.11",
+    "web-haptics": "^0.0.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/bun": "latest"
+  }
+}

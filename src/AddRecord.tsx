@@ -1,0 +1,54 @@
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { Confirm } from './add/Confirm'
+import { List } from './add/List'
+import { Modal } from './comp/Modal'
+
+export enum Stage {
+	LIST,
+	CONFIRM,
+	DONE,
+}
+export default function AddRecord({
+	addOpen,
+	setAddOpen,
+	barcode,
+}: {
+	addOpen: boolean
+	setAddOpen: Dispatch<SetStateAction<boolean>>
+	barcode: string
+}) {
+	const [currentRecordID, setCurrentRecordID] = useState(-1)
+	const [stage, setStage] = useState<Stage>(Stage.LIST)
+
+	useEffect(() => {
+		if (currentRecordID < 0) return
+		setStage(Stage.CONFIRM)
+	}, [currentRecordID])
+	// biome-ignore lint/correctness/useExhaustiveDependencies(setAddOpen): setAddOpen is not a value
+	useEffect(() => {
+		if (stage === Stage.DONE) {
+			setCurrentRecordID(-1)
+			setAddOpen(false)
+			setStage(Stage.LIST)
+		}
+	}, [stage])
+	return (
+		<Modal
+			modalState={{ isOpen: addOpen, setOpen: setAddOpen }}
+			onClose={() => {
+				setAddOpen(false)
+				setCurrentRecordID(-1)
+				setStage(Stage.LIST)
+			}}>
+			{stage === Stage.LIST && (
+				<List
+					barcode={barcode}
+					setCurrentRecordID={setCurrentRecordID}
+				/>
+			)}
+			{stage === Stage.CONFIRM && (
+				<Confirm setStage={setStage} record_id={currentRecordID} />
+			)}
+		</Modal>
+	)
+}
