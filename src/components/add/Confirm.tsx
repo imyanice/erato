@@ -6,11 +6,12 @@ import React, {
 } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
 import { ArrowLeft, ArrowRight } from '@/assets/Arrow'
-import { Loading } from '@/comp/Loading'
-import { RecordView } from '@/comp/RecordView'
+import { RecordView } from '@/components/list/RecordView'
+import { Loading } from '@/components/misc/Loading'
 import { useFetch } from '@/hooks/fetch'
 import { mutateRecords } from '@/hooks/records'
-import { Stage } from '../AddRecord'
+import { Stage } from '../../routeLike/AddRecord'
+import { StyledButton } from '../misc/StyledButton'
 
 export function Confirm({
 	record_id,
@@ -84,27 +85,20 @@ export function Confirm({
 				updateColor={updateColor}
 				controlledSides={updatedSides}>
 				<div className='mt-2 flex w-full'>
-					<button
-						className={
-							'p-2 bg-red-600/45 border-red-600 text-red-600 flex mr-auto  items-center justify-center h-9 active:scale-z-80 border-b-5 border-2 active:border-b-2 rounded-xl'
-						}
-						type='button'
+					<StyledButton
+						color='#DC2626'
+						className='mr-auto'
 						onClick={() => {
 							setStage(Stage.LIST)
 							trigger('success')
 						}}>
 						<ArrowLeft />
 						{'Cancel'}
-					</button>
-					<button
-						className={
-							'p-2 flex bg-green-600/45 border-green-600 text-green-600 items-center justify-center h-9 active:scale-z-80 border-b-5 border-2 active:border-b-2 rounded-xl'
-						}
-						type='button'
-						onClick={saveButton}>
+					</StyledButton>
+					<StyledButton onClick={saveButton} color='#16A34A'>
 						{'Save'}
 						<ArrowRight />
-					</button>
+					</StyledButton>
 				</div>
 			</RecordView>
 		</div>

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-
+/** Returned by the DB and by the `/api/fetch` & `/api/releases` endpoints  */
 export interface RecordType {
 	title: string
 	artist: string
@@ -32,7 +32,7 @@ const record_schema = new Schema<RecordType>({
 	country: String,
 	styles: [{ type: String, required: true }],
 	discogs_id: { type: Number, unique: true, required: true },
-	discogs_master_id: { type: Number, unique: true, required: true },
+	discogs_master_id: { type: Number, required: true },
 	sides: [
 		{
 			label: { type: String, required: true },
@@ -42,5 +42,4 @@ const record_schema = new Schema<RecordType>({
 	],
 })
 
-// export type RecordType = InferSchemaType<typeof record_schema>
 export const Record = model('Record', record_schema)

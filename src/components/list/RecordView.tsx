@@ -1,6 +1,7 @@
 import { type ChangeEvent, useRef, useState } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
 import type { RecordType } from '@/db/schema'
+import { StyledButton } from '../misc/StyledButton'
 
 /**
  * updatecolor is a function that should update the sides color
@@ -98,21 +99,15 @@ function ButtonInputColor({
 }) {
 	const { trigger: haptics } = useWebHaptics()
 	const inputRef = useRef<HTMLInputElement>(null)
-	if (enabled)
-		return (
-			<button
-				style={{
-					backgroundColor: `#${data}2D`,
-					borderColor: `#${data}`,
-					color: `#${data}`,
-				}}
-				type='button'
-				onClick={() => {
-					haptics('light')
-				}}
-				className={
-					'text-2xl w-full p-2 flex items-center justify-center h-9 active:scale-z-80 border-b-5 border-2 active:border-b-2 rounded-xl'
-				}>
+
+	return (
+		<StyledButton
+			className='text-2xl w-full'
+			color={`#${data}`}
+			onClick={() => {
+				if (enabled) haptics('light')
+			}}>
+			{enabled && (
 				<input
 					ref={inputRef}
 					className='fixed opacity-0 h-10 w-[90%]'
@@ -120,15 +115,8 @@ function ButtonInputColor({
 					type='color'
 					defaultValue={`#${data}`}
 				/>
-				{children}
-			</button>
-		)
-	return (
-		<span
-			className={
-				'text-2xl p-2 mb-2 flex items-center justify-center h-9 active:scale-z-80 border-b-5 border-2 active:border-b-2 rounded-xl'
-			}>
+			)}
 			{children}
-		</span>
+		</StyledButton>
 	)
 }

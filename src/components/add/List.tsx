@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
-import { Loading } from '@/comp/Loading'
+import { Loading } from '@/components/misc/Loading'
 import { useSearch } from '@/hooks/search'
 
 export function List({
@@ -29,7 +29,7 @@ export function List({
 					}}
 					className='bg-[#E5E5EA] w-full border border-white p-3 flex flex-row rounded-2xl mb-1'>
 					<img
-						alt='shutup'
+						alt={`${result.title}'s cover`}
 						className='h-24 w-24 rounded-sm'
 						src={result.cover}
 					/>
@@ -45,7 +45,7 @@ export function List({
 								{result.country}
 							</div>
 							{result.genres.map((genre) => {
-								if (genre === '') return
+								if (genre.trim() === '') return
 								return (
 									<div
 										key={genre}

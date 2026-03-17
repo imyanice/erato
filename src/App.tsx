@@ -2,8 +2,8 @@ import './index.css'
 
 import { BarcodeDetector } from 'barcode-detector'
 import { type ChangeEvent, useRef, useState } from 'react'
-import AddRecord from './AddRecord'
-import { Home } from './comp/Home'
+import AddRecord from './routeLike/AddRecord'
+import { RecordList } from './routeLike/RecordList'
 
 export function App() {
 	const [addOpen, setAddOpen] = useState(false)
@@ -55,7 +55,7 @@ export function App() {
 					barcode={currentBarCode}
 				/>
 			</div>
-			<Home />
+			<RecordList />
 		</div>
 	)
 }

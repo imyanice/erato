@@ -1,7 +1,7 @@
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
-import { Confirm } from './add/Confirm'
-import { List } from './add/List'
-import { Modal } from './comp/Modal'
+import { Confirm } from '../components/add/Confirm'
+import { List } from '../components/add/List'
+import { Modal } from '../components/Modal'
 
 export enum Stage {
 	LIST,
