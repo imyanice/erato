@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
 import { Save } from '@/assets/Save'
 import { Trash } from '@/assets/Trash'
@@ -6,21 +6,36 @@ import { RecordCard } from '@/components/list/RecordCard'
 import { StyledButton } from '@/components/misc/StyledButton'
 import type { RecordType } from '@/db/schema'
 import { deleteRecord, updateRecord, useRecords } from '@/hooks/records'
+import { useScrobbler } from '@/hooks/scrobble'
 import { groupSortRecords } from '@/processors/recordsList'
+import type { ScrobblingRequest } from '@/types/api'
 import { RecordView } from '../components/list/RecordView'
 import { Modal } from '../components/Modal'
 import { Loading } from '../components/misc/Loading'
 
-export function RecordList() {
+export function RecordList({
+	titleClicked,
+	setSpecialText,
+}: {
+	titleClicked: boolean
+	setSpecialText: Dispatch<SetStateAction<boolean>>
+}) {
 	const { trigger: haptics } = useWebHaptics()
 
-	const { records, isLoading } = useRecords()
 	const [recordIndex, setRecordIndex] = useState(0)
 	const [recordViewOpen, setRecordViewOpen] = useState(false)
 	const [updatedSides, setUpdatedSides] = useState<RecordType['sides']>([])
+	const [selectedScrobbles, setSelectedScrobbles] =
+		useState<ScrobblingRequest>([])
+
 	const [IDToIndexMap, setIDToIndexMap] = useState<Map<number, number>>(
 		new Map(),
 	)
+	const { records, isLoading } = useRecords()
+	const { scrobble } = useScrobbler(() => {
+		setSpecialText(false)
+		setSelectedScrobbles([])
+	})
 	const { triggerDeletion, isDeleting } = deleteRecord(() => {
 		setRecordViewOpen(false)
 		setRecordIndex(0)
@@ -34,6 +49,20 @@ export function RecordList() {
 			setUpdatedSides([...records[recordIndex].sides])
 	}, [records, recordIndex])
 
+	//biome-ignore lint/correctness/useExhaustiveDependencies(selectedScrobbles): acts as a button, it's very bad but not worth the arch change
+	//biome-ignore lint/correctness/useExhaustiveDependencies(selectedScrobbles.length): nuh uh
+	//biome-ignore lint/correctness/useExhaustiveDependencies(titleClicked): :D
+	//biome-ignore lint/correctness/useExhaustiveDependencies(scrobble): wtf man...
+	useEffect(() => {
+		if (selectedScrobbles.length > 0) {
+			scrobble(selectedScrobbles)
+		}
+	}, [titleClicked])
+	//biome-ignore lint/correctness/useExhaustiveDependencies(setSpecialText): bro
+	useEffect(() => {
+		if (selectedScrobbles.length > 0) setSpecialText(true)
+		else setSpecialText(false)
+	}, [selectedScrobbles.length])
 	useEffect(() => {
 		if (!isLoading && !isDeleting && !isUpdating && records) {
 			setIDToIndexMap(
@@ -89,6 +118,41 @@ export function RecordList() {
 			haptics('success')
 		}
 	}
+	function updateSelectedScrobbles(scrobble: ScrobblingRequest[number]) {
+		const oldIndex = selectedScrobbles.findIndex(
+			(e) => e.discogs_id === scrobble.discogs_id,
+		)
+		if (oldIndex === -1) {
+			setSelectedScrobbles([...selectedScrobbles, scrobble])
+		} else {
+			const old = selectedScrobbles[oldIndex] as ScrobblingRequest[number] // positive search
+			let newSides: string[] = []
+			if (scrobble.sides.length > 1) {
+				if (scrobble.sides.length !== old.sides.length) {
+					// same length: toggling the album: remove everything
+					// or the album cover was clicked: concatenate without dupes
+					newSides = Array.from(
+						new Set(scrobble.sides).union(new Set(old.sides)),
+					)
+				}
+			} else {
+				// it's a singleton meaning: toggle (add/remove)
+				newSides = old.sides.filter((e) => e !== scrobble.sides[0])
+			}
+			if (newSides.length === old.sides.length)
+				newSides.push(scrobble.sides[0] as string)
+
+			const toPush = [
+				...selectedScrobbles.filter((_, i) => i !== oldIndex),
+			]
+			if (newSides.length > 0)
+				toPush.push({
+					discogs_id: scrobble.discogs_id,
+					sides: newSides,
+				})
+			setSelectedScrobbles(toPush)
+		}
+	}
 	return (
 		<div>
 			<Modal
@@ -125,12 +189,13 @@ export function RecordList() {
 					</div>
 				</RecordView>
 			</Modal>
+
 			{groupSortRecords(records).map((recordsGroup) => {
 				return (
 					<>
 						<div className='flex justify-center text-[0.5rem] items-center'>
 							<div className='border border-black/40 h-0 grow ml-6' />
-							<div className=' px-2 text-black/40 text-center font-mono'>
+							<div className='px-2 text-black/40 text-center font-mono'>
 								{recordsGroup[0]?.artist
 									.split('')
 									.map((a) => `${a.toUpperCase()} `)}
@@ -139,6 +204,7 @@ export function RecordList() {
 						</div>
 						{recordsGroup.map((record) => (
 							<RecordCard
+								onScrobblableClick={updateSelectedScrobbles}
 								key={record.discogs_id}
 								record={record}
 								onInfoClick={() => {

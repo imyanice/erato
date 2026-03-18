@@ -1,12 +1,17 @@
+import { useWebHaptics } from 'web-haptics/react'
 import type { RecordType } from '@/db/schema'
+import type { ScrobblingRequest } from '@/types/api'
 
 export function RecordCard({
 	record,
 	onInfoClick,
+	onScrobblableClick,
 }: {
 	record: RecordType
 	onInfoClick: () => void
+	onScrobblableClick: (scrobble: ScrobblingRequest[number]) => void
 }) {
+	const { trigger: haptics } = useWebHaptics()
 	if (!record || !record.title) return
 	const title = record.title ?? ''
 	const cover = record.master_cover ?? ''
@@ -19,7 +24,11 @@ export function RecordCard({
 			<button
 				className='min-w-20 flex items-center justify-center max-w-20'
 				onClick={() => {
-					// haptics('success')
+					onScrobblableClick({
+						discogs_id: record.discogs_id,
+						sides: record.sides.map((e) => e.label),
+					})
+					haptics('selection')
 				}}
 				type='button'>
 				<img
@@ -63,7 +72,13 @@ export function RecordCard({
 							'p-2 w-9 flex items-center justify-center h-9 active:scale-z-80 transition duration-100 ease-in border-b-5 border-2 active:border-b-2 rounded-xl'
 						}
 						type='button'
-						onClick={() => {}}>
+						onClick={() => {
+							onScrobblableClick({
+								discogs_id: record.discogs_id,
+								sides: [side.label],
+							})
+							haptics('selection')
+						}}>
 						<span>{side.label.toLowerCase()}</span>
 					</button>
 				))}

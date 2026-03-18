@@ -8,3 +8,8 @@ export type SearchResponse = {
 	discogs_id: number
 	title: string
 }
+/** `/api/scrobble/` */
+export type ScrobblingRequest = {
+	discogs_id: number
+	sides: string[]
+}[]
