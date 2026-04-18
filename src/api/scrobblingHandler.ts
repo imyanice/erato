@@ -65,7 +65,6 @@ export async function POST(request: Bun.BunRequest<'/api/scrobble'>) {
 	params.push(['api_sig', sig])
 	params.push(['format', 'json'])
 
-	console.log(new URLSearchParams(params))
 	await fetch(CONSTANTS.lastfm.url, {
 		method: 'POST',
 		body: new URLSearchParams(params),

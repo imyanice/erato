@@ -43,11 +43,13 @@ export function RecordView({
 				</button>
 
 				<div className='flex pt-3 items-center flex-col'>
-					<span className='text-3xl font-bold'>{record.title}</span>
+					<span className='text-3xl font-bold text-center'>
+						{record.title}
+					</span>
 					<span className='text-2xl italic'>{record.artist}</span>
 				</div>
 				<div>
-					<span>
+					<span className='text-center flex'>
 						{record.year} &bull; {record.genres.join(' \u2022 ')}{' '}
 						&bull; {record.styles.join(' \u2022 ')}
 					</span>

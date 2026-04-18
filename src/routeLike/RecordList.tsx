@@ -3,6 +3,7 @@ import { useWebHaptics } from 'web-haptics/react'
 import { Save } from '@/assets/Save'
 import { Trash } from '@/assets/Trash'
 import { RecordCard } from '@/components/list/RecordCard'
+import { EmptyRecords } from '@/components/misc/EmptyRecords'
 import { StyledButton } from '@/components/misc/StyledButton'
 import type { RecordType } from '@/db/schema'
 import { deleteRecord, updateRecord, useRecords } from '@/hooks/records'
@@ -34,6 +35,7 @@ export function RecordList({
 	const { records, isLoading } = useRecords()
 	const { scrobble } = useScrobbler(() => {
 		setSpecialText(false)
+		haptics('success')
 		setSelectedScrobbles([])
 	})
 	const { triggerDeletion, isDeleting } = deleteRecord(() => {
@@ -70,8 +72,9 @@ export function RecordList({
 			)
 		}
 	}, [records, isLoading, isDeleting, isUpdating])
-	if (isLoading || isDeleting || isUpdating) return <Loading />
 
+	if (isLoading || isDeleting || isUpdating) return <Loading />
+	if (records.length === 0) return <EmptyRecords />
 	function updateColor(
 		event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
 		side: string,

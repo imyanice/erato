@@ -11,11 +11,11 @@ export enum Stage {
 export default function AddRecord({
 	addOpen,
 	setAddOpen,
-	barcode,
+	search,
 }: {
 	addOpen: boolean
 	setAddOpen: Dispatch<SetStateAction<boolean>>
-	barcode: string
+	search: ['barcode' | 'release', string]
 }) {
 	const [currentRecordID, setCurrentRecordID] = useState(-1)
 	const [stage, setStage] = useState<Stage>(Stage.LIST)
@@ -41,10 +41,7 @@ export default function AddRecord({
 				setStage(Stage.LIST)
 			}}>
 			{stage === Stage.LIST && (
-				<List
-					barcode={barcode}
-					setCurrentRecordID={setCurrentRecordID}
-				/>
+				<List search={search} setCurrentRecordID={setCurrentRecordID} />
 			)}
 			{stage === Stage.CONFIRM && (
 				<Confirm setStage={setStage} record_id={currentRecordID} />

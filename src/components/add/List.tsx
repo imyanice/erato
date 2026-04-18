@@ -5,12 +5,12 @@ import { useSearch } from '@/hooks/search'
 
 export function List({
 	setCurrentRecordID,
-	barcode,
+	search,
 }: {
 	setCurrentRecordID: Dispatch<SetStateAction<number>>
-	barcode: string
+	search: ['barcode' | 'release', string]
 }) {
-	const { results, isLoading } = useSearch(barcode)
+	const { results, isLoading } = useSearch(search)
 	const { trigger: haptics } = useWebHaptics()
 	if (isLoading) return <Loading />
 	return (

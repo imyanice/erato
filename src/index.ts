@@ -4,7 +4,6 @@ if (
 	!process.env.LASTFM_SECRET ||
 	!process.env.MONGO ||
 	!process.env.DISCOGS_KEY
-
 ) {
 	console.log('invalid envs >3')
 	process.exit(1)
@@ -36,7 +35,7 @@ const server = serve({
 		// Serve index.html for all unmatched routes.
 		'/*': index,
 
-		'/api/search/:barcode': discogsSearchHandler.GET,
+		'/api/search/:type': discogsSearchHandler.GET,
 		'/api/fetch/:id': discogsFetchHandler.GET,
 		'/api/records': {
 			POST: recordsHandler.POST,
