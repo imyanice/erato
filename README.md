@@ -1,21 +1,5 @@
-# bun-react-tailwind-template
+# erato
 
-To install dependencies:
+record collection scrobbler
 
-```bash
-bun install
-```
-
-To start a development server:
-
-```bash
-bun dev
-```
-
-To run for production:
-
-```bash
-bun start
-```
-
-This project was created using `bun init` in bun v1.3.5. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+![cat](src/assets/cats/cat-2.JPG)
