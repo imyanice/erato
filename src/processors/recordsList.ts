@@ -18,8 +18,7 @@ export function groupSortRecords(records: RecordType[]) {
 				if (last_group.length > 0) {
 					// always true: an empty group cannot be pushed
 					if (last_group[0]) {
-						const last_name =
-							last_group[0].artist_sort ?? last_group[0].artist
+						const last_name = last_group[0].artist_sort ?? last_group[0].artist
 						if (last_name === (e.artist_sort ?? e.artist)) {
 							accumulator[accLen - 1]?.push(e)
 						} else {

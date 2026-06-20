@@ -26,12 +26,9 @@ export function RecordList({
 	const [recordIndex, setRecordIndex] = useState(0)
 	const [recordViewOpen, setRecordViewOpen] = useState(false)
 	const [updatedSides, setUpdatedSides] = useState<RecordType['sides']>([])
-	const [selectedScrobbles, setSelectedScrobbles] =
-		useState<ScrobblingRequest>([])
+	const [selectedScrobbles, setSelectedScrobbles] = useState<ScrobblingRequest>([])
 
-	const [IDToIndexMap, setIDToIndexMap] = useState<Map<number, number>>(
-		new Map(),
-	)
+	const [IDToIndexMap, setIDToIndexMap] = useState<Map<number, number>>(new Map())
 	const { records, isLoading } = useRecords()
 	const { scrobble } = useScrobbler(() => {
 		setSpecialText(false)
@@ -47,8 +44,7 @@ export function RecordList({
 		setRecordIndex(0)
 	})
 	useEffect(() => {
-		if (records[recordIndex])
-			setUpdatedSides([...records[recordIndex].sides])
+		if (records[recordIndex]) setUpdatedSides([...records[recordIndex].sides])
 	}, [records, recordIndex])
 
 	//biome-ignore lint/correctness/useExhaustiveDependencies(selectedScrobbles): acts as a button, it's very bad but not worth the arch change
@@ -67,18 +63,13 @@ export function RecordList({
 	}, [selectedScrobbles.length])
 	useEffect(() => {
 		if (!isLoading && !isDeleting && !isUpdating && records) {
-			setIDToIndexMap(
-				new Map(records.map((e, index) => [e.discogs_id, index])),
-			)
+			setIDToIndexMap(new Map(records.map((e, index) => [e.discogs_id, index])))
 		}
 	}, [records, isLoading, isDeleting, isUpdating])
 
 	if (isLoading || isDeleting || isUpdating) return <Loading />
 	if (records.length === 0) return <EmptyRecords />
-	function updateColor(
-		event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
-		side: string,
-	) {
+	function updateColor(event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>, side: string) {
 		const side_index = updatedSides.findIndex((e) => e.label === side)
 		if (side_index === -1) {
 			// should not happen
@@ -107,9 +98,7 @@ export function RecordList({
 	function requestRecordUpdate(rIndex: number) {
 		if (records[rIndex]) {
 			for (const updated of updatedSides) {
-				const index = records[rIndex].sides.findIndex(
-					(e) => updated.label === e.label,
-				)
+				const index = records[rIndex].sides.findIndex((e) => updated.label === e.label)
 				if (index !== -1 && records[rIndex].sides[index]) {
 					records[rIndex].sides[index].color = updated.color
 				}
@@ -122,9 +111,7 @@ export function RecordList({
 		}
 	}
 	function updateSelectedScrobbles(scrobble: ScrobblingRequest[number]) {
-		const oldIndex = selectedScrobbles.findIndex(
-			(e) => e.discogs_id === scrobble.discogs_id,
-		)
+		const oldIndex = selectedScrobbles.findIndex((e) => e.discogs_id === scrobble.discogs_id)
 		if (oldIndex === -1) {
 			setSelectedScrobbles([...selectedScrobbles, scrobble])
 		} else {
@@ -134,20 +121,15 @@ export function RecordList({
 				if (scrobble.sides.length !== old.sides.length) {
 					// same length: toggling the album: remove everything
 					// or the album cover was clicked: concatenate without dupes
-					newSides = Array.from(
-						new Set(scrobble.sides).union(new Set(old.sides)),
-					)
+					newSides = Array.from(new Set(scrobble.sides).union(new Set(old.sides)))
 				}
 			} else {
 				// it's a singleton meaning: toggle (add/remove)
 				newSides = old.sides.filter((e) => e !== scrobble.sides[0])
 			}
-			if (newSides.length === old.sides.length)
-				newSides.push(scrobble.sides[0] as string)
+			if (newSides.length === old.sides.length) newSides.push(scrobble.sides[0] as string)
 
-			const toPush = [
-				...selectedScrobbles.filter((_, i) => i !== oldIndex),
-			]
+			const toPush = [...selectedScrobbles.filter((_, i) => i !== oldIndex)]
 			if (newSides.length > 0)
 				toPush.push({
 					discogs_id: scrobble.discogs_id,
@@ -166,28 +148,27 @@ export function RecordList({
 				onClose={() => {
 					setRecordViewOpen(false)
 					setRecordIndex(0)
-				}}>
+				}}
+			>
 				<RecordView
 					updateColor={updateColor}
 					controlledSides={updatedSides}
-					record={records[recordIndex] as RecordType}>
-					<div className='w-full mt-2 flex items-center justify-center gap-2'>
+					record={records[recordIndex] as RecordType}
+				>
+					<div className="w-full mt-2 flex items-center justify-center gap-2">
 						<StyledButton
-							color='#DC2626'
+							color="#DC2626"
 							onClick={() => {
-								triggerDeletion(
-									records[recordIndex]?.discogs_id ?? -1,
-								)
+								triggerDeletion(records[recordIndex]?.discogs_id ?? -1)
 								haptics('success')
-							}}>
+							}}
+						>
 							<Trash />
 							DELETE!
 						</StyledButton>
-						<StyledButton
-							color='#16A34A'
-							onClick={() => requestRecordUpdate(recordIndex)}>
+						<StyledButton color="#16A34A" onClick={() => requestRecordUpdate(recordIndex)}>
 							<Save />
-							<span className='pl-1'>SAVE!</span>
+							<span className="pl-1">SAVE!</span>
 						</StyledButton>
 					</div>
 				</RecordView>
@@ -196,14 +177,12 @@ export function RecordList({
 			{groupSortRecords(records).map((recordsGroup) => {
 				return (
 					<>
-						<div className='flex justify-center text-[0.5rem] items-center'>
-							<div className='border border-black/40 h-0 grow ml-6' />
-							<div className='px-2 text-black/40 text-center font-mono'>
-								{recordsGroup[0]?.artist
-									.split('')
-									.map((a) => `${a.toUpperCase()} `)}
+						<div className="flex justify-center text-[0.5rem] items-center">
+							<div className="border border-black/40 h-0 grow ml-6" />
+							<div className="px-2 text-black/40 text-center font-mono">
+								{recordsGroup[0]?.artist.split('').map((a) => `${a.toUpperCase()} `)}
 							</div>
-							<div className='border border-black/40 h-0 grow mr-6' />
+							<div className="border border-black/40 h-0 grow mr-6" />
 						</div>
 						{recordsGroup.map((record) => (
 							<RecordCard
@@ -211,10 +190,7 @@ export function RecordList({
 								key={record.discogs_id}
 								record={record}
 								onInfoClick={() => {
-									setRecordIndex(
-										IDToIndexMap.get(record.discogs_id) ??
-											-1,
-									)
+									setRecordIndex(IDToIndexMap.get(record.discogs_id) ?? -1)
 									setRecordViewOpen(true)
 									haptics('heavy')
 								}}

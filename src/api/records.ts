@@ -10,9 +10,7 @@ export async function POST(req: Bun.BunRequest<'/api/records'>) {
 	} catch {} // should only error on duplicate documents
 	return await GET()
 }
-export async function DELETE({
-	params: { release_id },
-}: Bun.BunRequest<'/api/records/:release_id'>) {
+export async function DELETE({ params: { release_id } }: Bun.BunRequest<'/api/records/:release_id'>) {
 	await Record.deleteOne({
 		discogs_id: new Number(release_id),
 	})

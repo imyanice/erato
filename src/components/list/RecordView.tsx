@@ -15,10 +15,7 @@ export function RecordView({
 }: {
 	record: RecordType
 	children: React.ReactNode
-	updateColor: (
-		event: ChangeEvent<HTMLInputElement, HTMLInputElement>,
-		label: string,
-	) => void
+	updateColor: (event: ChangeEvent<HTMLInputElement, HTMLInputElement>, label: string) => void
 	controlledSides: RecordType['sides'] | null
 }) {
 	const { trigger: haptics } = useWebHaptics()
@@ -28,47 +25,42 @@ export function RecordView({
 	const [currentCover, setCurrentCover] = useState(0)
 	return (
 		<>
-			<div className='flex flex-col items-center w-full'>
+			<div className="flex flex-col items-center w-full">
 				<button
-					type='button'
+					type="button"
 					onClick={() => {
 						setCurrentCover((currentCover + 1) % 2)
 						haptics('light')
-					}}>
-					<img
-						className='h-60 rounded-lg shadow-lg shadow-black/30 '
-						src={covers[currentCover]}
-						alt={'album cover'}
-					/>
+					}}
+				>
+					<img className="h-60 rounded-lg shadow-lg shadow-black/30 " src={covers[currentCover]} alt={'album cover'} />
 				</button>
 
-				<div className='flex pt-3 items-center flex-col'>
-					<span className='text-3xl font-bold text-center'>
-						{record.title}
-					</span>
-					<span className='text-2xl italic'>{record.artist}</span>
+				<div className="flex pt-3 items-center flex-col">
+					<span className="text-3xl font-bold text-center">{record.title}</span>
+					<span className="text-2xl italic">{record.artist}</span>
 				</div>
 				<div>
-					<span className='text-center flex'>
-						{record.year} &bull; {record.genres.join(' \u2022 ')}{' '}
-						&bull; {record.styles.join(' \u2022 ')}
+					<span className="text-center flex">
+						{record.year} &bull; {record.genres.join(' \u2022 ')} &bull; {record.styles.join(' \u2022 ')}
 					</span>
 				</div>
 			</div>
-			<div className='w-full'>
+			<div className="w-full">
 				{sides.map((side) => {
 					return (
 						<div key={side.label}>
-							<div className='w-full text-start rounded-2xl block p-2 my-2 pt-0'>
+							<div className="w-full text-start rounded-2xl block p-2 my-2 pt-0">
 								<ButtonInputColor
 									enabled={!readOnlyColors}
 									onChange={(event) => {
 										updateColor(event, side.label)
 									}}
-									data={side.color}>
+									data={side.color}
+								>
 									{side.label} Side
 								</ButtonInputColor>
-								<div className='ml-4 font-mono text-md'>
+								<div className="ml-4 font-mono text-md">
 									{side.tracks.map((track) => {
 										return (
 											<div key={track.position}>
@@ -104,17 +96,18 @@ function ButtonInputColor({
 
 	return (
 		<StyledButton
-			className='text-2xl w-full'
+			className="text-2xl w-full"
 			color={`#${data}`}
 			onClick={() => {
 				if (enabled) haptics('light')
-			}}>
+			}}
+		>
 			{enabled && (
 				<input
 					ref={inputRef}
-					className='fixed opacity-0 h-10 w-[90%]'
+					className="fixed opacity-0 h-10 w-[90%]"
 					onChange={onChange}
-					type='color'
+					type="color"
 					defaultValue={`#${data}`}
 				/>
 			)}

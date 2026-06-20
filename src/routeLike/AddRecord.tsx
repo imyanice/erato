@@ -39,13 +39,10 @@ export default function AddRecord({
 				setAddOpen(false)
 				setCurrentRecordID(-1)
 				setStage(Stage.LIST)
-			}}>
-			{stage === Stage.LIST && (
-				<List search={search} setCurrentRecordID={setCurrentRecordID} />
-			)}
-			{stage === Stage.CONFIRM && (
-				<Confirm setStage={setStage} record_id={currentRecordID} />
-			)}
+			}}
+		>
+			{stage === Stage.LIST && <List search={search} setCurrentRecordID={setCurrentRecordID} />}
+			{stage === Stage.CONFIRM && <Confirm setStage={setStage} record_id={currentRecordID} />}
 		</Modal>
 	)
 }

@@ -24,7 +24,7 @@ export type IndexTracks = {
 	sub_tracks: StandardTracks[]
 }
 /** discogs' master release but loosely typed */
-export type MasterReleaseType = Omit<
-	Omit<Omit<Omit<ReleaseType, 'master_id'>, 'thumb'>, 'artists_sort'>,
-	'country'
-> & { year: number; images: { type: 'primary' | 'secondary'; uri: string }[] }
+export type MasterReleaseType = Omit<Omit<Omit<Omit<ReleaseType, 'master_id'>, 'thumb'>, 'artists_sort'>, 'country'> & {
+	year: number
+	images: { type: 'primary' | 'secondary'; uri: string }[]
+}

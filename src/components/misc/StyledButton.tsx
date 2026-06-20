@@ -17,8 +17,9 @@ export function StyledButton({
 				color: color,
 			}}
 			className={`p-2 flex items-center justify-center h-9 active:scale-z-80 border-b-5 border-2 active:border-b-2 rounded-xl ${className}`}
-			type='button'
-			onClick={onClick}>
+			type="button"
+			onClick={onClick}
+		>
 			{children}
 		</button>
 	)

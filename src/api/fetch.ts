@@ -2,12 +2,8 @@ import type { RecordType } from '@/db/schema'
 import type * as Discogs from '@/types/discogs/releases'
 import { CONSTANTS } from '..'
 
-export async function GET({
-	params: { id },
-}: Bun.BunRequest<'/api/fetch/:id'>) {
-	const discogs_res = await fetch(
-		`https://api.discogs.com/releases/${id}?token=${CONSTANTS.discogs}`,
-	)
+export async function GET({ params: { id } }: Bun.BunRequest<'/api/fetch/:id'>) {
+	const discogs_res = await fetch(`https://api.discogs.com/releases/${id}?token=${CONSTANTS.discogs}`)
 	if (!discogs_res.ok) {
 		console.log(discogs_res)
 		return Response.error()
@@ -20,9 +16,7 @@ export async function GET({
 		master_cover: '',
 		country: fetch_results.country,
 		artist_sort: fetch_results.artists_sort,
-		artist: fetch_results.artists
-			.map((artist: { name: string }) => artist.name)
-			.join(', '),
+		artist: fetch_results.artists.map((artist: { name: string }) => artist.name).join(', '),
 		title: fetch_results.title,
 		genres: fetch_results.genres,
 		styles: fetch_results.styles,
@@ -34,9 +28,7 @@ export async function GET({
 		if (track.type_ === 'track') {
 			if (track.position.length < 1) continue
 			const side_label = track.position[0] as string // eg: A2 + will never fail sinc elength >= 1
-			const side_pos = sides.findIndex(
-				(side) => side.label === side_label,
-			)
+			const side_pos = sides.findIndex((side) => side.label === side_label)
 			if (side_pos === -1) {
 				sides.push({
 					color: '',
@@ -54,9 +46,7 @@ export async function GET({
 			for (const subtrack of track.sub_tracks) {
 				if (subtrack.position.length < 1) continue
 				const side_label = subtrack.position[0] as string // eg: A2 + will never fail sinc elength >= 1
-				const side_pos = sides.findIndex(
-					(side) => side.label === side_label,
-				)
+				const side_pos = sides.findIndex((side) => side.label === side_label)
 				if (side_pos === -1) {
 					sides.push({
 						color: '',
@@ -85,15 +75,12 @@ export async function GET({
 			`https://api.discogs.com/masters/${res.discogs_master_id}?token=${process.env.DISCOGS_TOKEN}`,
 		)
 		if (discogs_master_res.ok) {
-			const master_fetch_results =
-				(await discogs_master_res.json()) as Discogs.MasterReleaseType
+			const master_fetch_results = (await discogs_master_res.json()) as Discogs.MasterReleaseType
 			res.year = master_fetch_results.year
 			let cover = ''
 			if (master_fetch_results.images.length > 0) {
 				cover =
-					master_fetch_results.images.find(
-						(e) => e.type === 'primary',
-					)?.uri ??
+					master_fetch_results.images.find((e) => e.type === 'primary')?.uri ??
 					master_fetch_results.images[0]?.uri ?? // fallback to first element
 					`https://media.discordapp.net/attachments/1066756781319135264/
 					1147481595931017266/367413930_2262289477294640_7133410966712318271_n.gif

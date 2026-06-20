@@ -1,9 +1,4 @@
-import React, {
-	type Dispatch,
-	type SetStateAction,
-	useEffect,
-	useState,
-} from 'react'
+import React, { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
 import { ArrowLeft, ArrowRight } from '@/assets/Arrow'
 import { RecordView } from '@/components/list/RecordView'
@@ -13,13 +8,7 @@ import { mutateRecords } from '@/hooks/records'
 import { Stage } from '../../routeLike/AddRecord'
 import { StyledButton } from '../misc/StyledButton'
 
-export function Confirm({
-	record_id,
-	setStage,
-}: {
-	record_id: number
-	setStage: Dispatch<SetStateAction<Stage>>
-}) {
+export function Confirm({ record_id, setStage }: { record_id: number; setStage: Dispatch<SetStateAction<Stage>> }) {
 	const { trigger } = useWebHaptics()
 	const { trigger: save } = mutateRecords(() => setStage(Stage.DONE))
 	const { record, isLoading } = useFetch(record_id)
@@ -35,9 +24,7 @@ export function Confirm({
 		if (!record) return
 		trigger('success')
 		for (const updated of updatedSides) {
-			const index = record.sides.findIndex(
-				(e) => updated.label === e.label,
-			)
+			const index = record.sides.findIndex((e) => updated.label === e.label)
 			if (index !== -1 && record.sides[index]) {
 				record.sides[index].color = updated.color
 			}
@@ -49,10 +36,7 @@ export function Confirm({
 	}, [record])
 	if (!record || isLoading) return <Loading />
 
-	function updateColor(
-		event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>,
-		side: string,
-	) {
+	function updateColor(event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>, side: string) {
 		const side_index = updatedSides.findIndex((e) => e.label === side)
 		if (side_index === -1) {
 			// should not happen
@@ -79,23 +63,21 @@ export function Confirm({
 		}
 	}
 	return (
-		<div className='w-full'>
-			<RecordView
-				record={record}
-				updateColor={updateColor}
-				controlledSides={updatedSides}>
-				<div className='mt-2 flex w-full'>
+		<div className="w-full">
+			<RecordView record={record} updateColor={updateColor} controlledSides={updatedSides}>
+				<div className="mt-2 flex w-full">
 					<StyledButton
-						color='#DC2626'
-						className='mr-auto'
+						color="#DC2626"
+						className="mr-auto"
 						onClick={() => {
 							setStage(Stage.LIST)
 							trigger('success')
-						}}>
+						}}
+					>
 						<ArrowLeft />
 						{'Cancel'}
 					</StyledButton>
-					<StyledButton onClick={saveButton} color='#16A34A'>
+					<StyledButton onClick={saveButton} color="#16A34A">
 						{'Save'}
 						<ArrowRight />
 					</StyledButton>

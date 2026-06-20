@@ -2,7 +2,7 @@ if (
 	!process.env.LASTFM_KEY ||
 	!process.env.LASTFM_SK ||
 	!process.env.LASTFM_SECRET ||
-	!process.env.MONGO ||
+	!process.env.MONGO_URL ||
 	!process.env.DISCOGS_KEY
 ) {
 	console.log('invalid envs >3')
@@ -24,7 +24,7 @@ export const CONSTANTS = {
 		secret: process.env.LASTFM_SECRET,
 		url: 'http://ws.audioscrobbler.com/2.0/',
 	},
-	mongo: process.env.MONGO,
+	mongo: process.env.MONGO_URL,
 	discogs: process.env.DISCOGS_KEY,
 } as const
 mongoose.connect(CONSTANTS.mongo).then(() => console.log('mongo connected'))
