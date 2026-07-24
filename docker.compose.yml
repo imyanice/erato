@@ -1,0 +1,39 @@
+services:
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-root}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-example}
+    volumes:
+      - mongo-data:/data/db
+    # ports:
+    #   - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  erato:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      MONGO_URL: mongodb://${MONGO_USER:-root}:${MONGO_PASSWORD:-example}@mongo:27017/erato?authSource=admin
+      LASTFM_KEY: ${LASTFM_KEY}
+      LASTFM_SECRET: ${LASTFM_SECRET}
+      LASTFM_SK: ${LASTFM_SK}
+      DISCOGS_KEY: ${DISCOGS_KEY}
+      DISCOGS_TOKEN: ${DISCOGS_TOKEN:-${DISCOGS_KEY}}
+      PORT: 3000
+    ports:
+      - "${ERATO_PORT:-3000}:3000"
+
+volumes:
+  mongo-data:
