@@ -1,18 +1,21 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
+
 import { Save } from '@/assets/Save'
 import { Trash } from '@/assets/Trash'
 import { RecordCard } from '@/components/list/RecordCard'
 import { EmptyRecords } from '@/components/misc/EmptyRecords'
 import { StyledButton } from '@/components/misc/StyledButton'
-import type { RecordType } from '@/db/schema'
 import { deleteRecord, updateRecord, useRecords } from '@/hooks/records'
 import { useScrobbler } from '@/hooks/scrobble'
 import { groupSortRecords } from '@/processors/recordsList'
+import type { RecordType } from '@/db/schema'
 import type { ScrobblingRequest } from '@/types/api'
+
 import { RecordView } from '../components/list/RecordView'
-import { Modal } from '../components/Modal'
 import { Loading } from '../components/misc/Loading'
+import { Modal } from '../components/Modal'
 
 export function RecordList({
 	titleClicked,
@@ -32,7 +35,7 @@ export function RecordList({
 	const { records, isLoading } = useRecords()
 	const { scrobble } = useScrobbler(() => {
 		setSpecialText(false)
-		haptics('success')
+		void haptics('success')
 		setSelectedScrobbles([])
 	})
 	const { triggerDeletion, isDeleting } = deleteRecord(() => {
@@ -47,16 +50,12 @@ export function RecordList({
 		if (records[recordIndex]) setUpdatedSides([...records[recordIndex].sides])
 	}, [records, recordIndex])
 
-	//biome-ignore lint/correctness/useExhaustiveDependencies(selectedScrobbles): acts as a button, it's very bad but not worth the arch change
-	//biome-ignore lint/correctness/useExhaustiveDependencies(selectedScrobbles.length): nuh uh
-	//biome-ignore lint/correctness/useExhaustiveDependencies(titleClicked): :D
-	//biome-ignore lint/correctness/useExhaustiveDependencies(scrobble): wtf man...
+
 	useEffect(() => {
 		if (selectedScrobbles.length > 0) {
-			scrobble(selectedScrobbles)
+			void scrobble(selectedScrobbles)
 		}
 	}, [titleClicked])
-	//biome-ignore lint/correctness/useExhaustiveDependencies(setSpecialText): bro
 	useEffect(() => {
 		if (selectedScrobbles.length > 0) setSpecialText(true)
 		else setSpecialText(false)
@@ -103,11 +102,11 @@ export function RecordList({
 					records[rIndex].sides[index].color = updated.color
 				}
 			}
-			triggerUpdate({
+			void triggerUpdate({
 				record_id: records[rIndex]?.discogs_id ?? -1,
 				data: records[rIndex],
 			})
-			haptics('success')
+			void haptics('success')
 		}
 	}
 	function updateSelectedScrobbles(scrobble: ScrobblingRequest[number]) {
@@ -148,27 +147,24 @@ export function RecordList({
 				onClose={() => {
 					setRecordViewOpen(false)
 					setRecordIndex(0)
-				}}
-			>
+				}}>
 				<RecordView
 					updateColor={updateColor}
 					controlledSides={updatedSides}
-					record={records[recordIndex] as RecordType}
-				>
-					<div className="w-full mt-2 flex items-center justify-center gap-2">
+					record={records[recordIndex] as RecordType}>
+					<div className='w-full mt-2 flex items-center justify-center gap-2'>
 						<StyledButton
-							color="#DC2626"
-							onClick={() => {
-								triggerDeletion(records[recordIndex]?.discogs_id ?? -1)
-								haptics('success')
-							}}
-						>
+							color='#DC2626'
+							onClick={async () => {
+								void triggerDeletion(records[recordIndex]?.discogs_id ?? -1)
+								void haptics('success')
+							}}>
 							<Trash />
 							DELETE!
 						</StyledButton>
-						<StyledButton color="#16A34A" onClick={() => requestRecordUpdate(recordIndex)}>
+						<StyledButton color='#16A34A' onClick={() => requestRecordUpdate(recordIndex)}>
 							<Save />
-							<span className="pl-1">SAVE!</span>
+							<span className='pl-1'>SAVE!</span>
 						</StyledButton>
 					</div>
 				</RecordView>
@@ -177,12 +173,12 @@ export function RecordList({
 			{groupSortRecords(records).map((recordsGroup) => {
 				return (
 					<>
-						<div className="flex justify-center text-[0.5rem] items-center">
-							<div className="border border-black/40 h-0 grow ml-6" />
-							<div className="px-2 text-black/40 text-center font-mono">
+						<div className='flex justify-center text-[0.5rem] items-center'>
+							<div className='border border-black/40 h-0 grow ml-6' />
+							<div className='px-2 text-black/40 text-center font-mono'>
 								{recordsGroup[0]?.artist.split('').map((a) => `${a.toUpperCase()} `)}
 							</div>
-							<div className="border border-black/40 h-0 grow mr-6" />
+							<div className='border border-black/40 h-0 grow mr-6' />
 						</div>
 						{recordsGroup.map((record) => (
 							<RecordCard
@@ -192,7 +188,7 @@ export function RecordList({
 								onInfoClick={() => {
 									setRecordIndex(IDToIndexMap.get(record.discogs_id) ?? -1)
 									setRecordViewOpen(true)
-									haptics('heavy')
+									void haptics('heavy')
 								}}
 							/>
 						))}

@@ -1,10 +1,13 @@
-import React, { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { useWebHaptics } from 'web-haptics/react'
+
 import { ArrowLeft, ArrowRight } from '@/assets/Arrow'
 import { RecordView } from '@/components/list/RecordView'
 import { Loading } from '@/components/misc/Loading'
 import { useFetch } from '@/hooks/fetch'
 import { mutateRecords } from '@/hooks/records'
+
 import { Stage } from '../../routeLike/AddRecord'
 import { StyledButton } from '../misc/StyledButton'
 
@@ -22,14 +25,14 @@ export function Confirm({ record_id, setStage }: { record_id: number; setStage: 
 
 	function saveButton() {
 		if (!record) return
-		trigger('success')
+		void trigger('success')
 		for (const updated of updatedSides) {
 			const index = record.sides.findIndex((e) => updated.label === e.label)
 			if (index !== -1 && record.sides[index]) {
 				record.sides[index].color = updated.color
 			}
 		}
-		save(record)
+		void save(record)
 	}
 	useEffect(() => {
 		if (record) setUpdatedSides([...record.sides])
@@ -63,21 +66,20 @@ export function Confirm({ record_id, setStage }: { record_id: number; setStage: 
 		}
 	}
 	return (
-		<div className="w-full">
+		<div className='w-full'>
 			<RecordView record={record} updateColor={updateColor} controlledSides={updatedSides}>
-				<div className="mt-2 flex w-full">
+				<div className='mt-2 flex w-full'>
 					<StyledButton
-						color="#DC2626"
-						className="mr-auto"
+						color='#DC2626'
+						className='mr-auto'
 						onClick={() => {
 							setStage(Stage.LIST)
-							trigger('success')
-						}}
-					>
+							void trigger('success')
+						}}>
 						<ArrowLeft />
 						{'Cancel'}
 					</StyledButton>
-					<StyledButton onClick={saveButton} color="#16A34A">
+					<StyledButton onClick={saveButton} color='#16A34A'>
 						{'Save'}
 						<ArrowRight />
 					</StyledButton>

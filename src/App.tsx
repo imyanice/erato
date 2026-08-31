@@ -2,7 +2,9 @@ import './index.css'
 import './thingy.css'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { BarcodeDetector } from 'barcode-detector'
-import { type ChangeEvent, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import type { ChangeEvent } from 'react'
+
 import { Keyboard } from './assets/Keyboard'
 import { UploadImage } from './assets/UploadImage'
 import AddRecord from './routeLike/AddRecord'
@@ -37,47 +39,45 @@ export function App() {
 		event.target.value = ''
 	}
 	return (
-		<div className="max-w-7xl mx-auto px-2 bg-card mb-10">
-			<input type="file" className="opacity-0 fixed top-0" ref={fileInputRef} onChange={handleFileUpload} />
-			<div className="text-5xl font-bold my-4 leading-tight flex flex-row items-center ">
-				<button className="mr-auto" type="submit" onClick={() => setTitleClicked(!titleClicked)}>
+		<div className='max-w-7xl mx-auto px-2 bg-card mb-10'>
+			<input type='file' className='opacity-0 fixed top-0' ref={fileInputRef} onChange={handleFileUpload} />
+			<div className='text-5xl font-bold my-4 leading-tight flex flex-row items-center '>
+				<button className='mr-auto' type='submit' onClick={() => setTitleClicked(!titleClicked)}>
 					Erat
-					<span className="">{`${!titleUnderline ? 'o' : 'o*'}`}</span>
+					<span className=''>{!titleUnderline ? 'o' : 'o*'}</span>
 				</button>
 				<Menu>
 					<MenuButton className={'outline-0'}>
-						<div className="font-normal flex flex-row text-3xl" /*onClick={() => setAddOpen(true)}*/>+</div>
+						<div className='font-normal flex flex-row text-3xl' /*onClick={() => setAddOpen(true)}*/>+</div>
 					</MenuButton>
 					<MenuItems
 						transition
-						anchor="bottom end"
+						anchor='bottom end'
 						className={
 							'outline-0 flex flex-col bg-[#E5E5EA] py-2 shadow-lg shadow-black/30 ease-in-out transition duration-200 data-closed:opacity-0 rounded-2xl border border-white '
-						}
-					>
-						<MenuItem as="div" className={'px-2'}>
-							<div className="flex flex-row">
+						}>
+						<MenuItem as='div' className={'px-2'}>
+							<div className='flex flex-row'>
 								<UploadImage />
-								<button className="ml-2 inline" type="button" onClick={openFilePicker}>
+								<button className='ml-2 inline' type='button' onClick={openFilePicker}>
 									Upload Image
 								</button>
 							</div>
 						</MenuItem>
-						<div className="w-full border-white border my-2"></div>
-						<MenuItem as="div" className={'px-2'}>
+						<div className='w-full border-white border my-2'></div>
+						<MenuItem as='div' className={'px-2'}>
 							<button
-								type="button"
-								className="flex flex-row"
+								type='button'
+								className='flex flex-row'
 								onClick={() => {
 									const res = prompt('Record to search for')
 									if (res) {
 										setCurrentSearch(['release', res])
 										setAddOpen(true)
 									}
-								}}
-							>
+								}}>
 								<Keyboard />
-								<span className="ml-2">Search Name</span>
+								<span className='ml-2'>Search Name</span>
 							</button>
 						</MenuItem>
 					</MenuItems>

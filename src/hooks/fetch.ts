@@ -1,4 +1,5 @@
-import useSWR from 'node_modules/swr/dist/index'
+import useSWR from 'swr'
+
 import type { RecordType } from '@/db/schema'
 
 const fetcher = (...args: Parameters<typeof fetch>) => fetch(...args).then((res) => res.json())

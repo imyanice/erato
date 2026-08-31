@@ -8,5 +8,5 @@ import Cat6 from './cat-6.JPG'
 import Cat7 from './cat-7.JPG'
 export function Cats({ cat, className }: { className: string; cat: number }) {
 	const catss = [Cat0, Cat1, Cat2, Cat3, Cat4, Cat5, Cat6, Cat7]
-	return <img className={className} src={catss[cat % catss.length]} alt="cat" />
+	return <img className={className} src={catss[cat % catss.length]} alt='cat' />
 }

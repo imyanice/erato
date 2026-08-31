@@ -1,7 +1,42 @@
 {
-  "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "useTabs": true,
-  "singleQuote": true,
-  "printWidth": 120,
-  "semi": false
+	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/281fde37b3741f93976e9b7d01e4795afe61de36/npm/oxfmt/configuration_schema.json",
+	"tabWidth": 4,
+	"printWidth": 125,
+	"endOfLine": "lf",
+	"jsxSingleQuote": true,
+	"singleQuote": true,
+	"bracketSameLine": true,
+	"bracketSpacing": true,
+	"semi": false,
+	"trailingComma": "all",
+	"arrowParens": "always",
+	"useTabs": true,
+	"sortImports": {
+		"newlinesBetween": false,
+		"groups": [
+			["value-builtin", "type-builtin"],
+			{
+				"newlinesBetween": true
+			},
+			["value-external", "type-external"],
+			{
+				"newlinesBetween": true
+			},
+
+			"value-internal",
+			"type-internal",
+			{
+				"newlinesBetween": true
+			},
+			["value-parent", "value-sibling", "value-index"],
+			{
+				"newlinesBetween": true
+			},
+			["type-parent", "type-sibling", "type-index"],
+			{
+				"newlinesBetween": true
+			},
+			"unknown"
+		]
+	}
 }

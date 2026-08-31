@@ -1,4 +1,5 @@
 import useSWRMutation from 'swr/mutation'
+
 import type { ScrobblingRequest } from '@/types/api'
 
 export function useScrobbler(fn: () => void) {

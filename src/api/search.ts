@@ -1,5 +1,7 @@
 import type { SearchResponse } from '@/types/api'
+
 import { CONSTANTS } from '..'
+
 import type * as Discogs from '../types/discogs/search'
 
 export async function GET({ params: { type }, url }: Bun.BunRequest<'/api/search/:type'>) {

@@ -1,4 +1,6 @@
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+
 import { Confirm } from '../components/add/Confirm'
 import { List } from '../components/add/List'
 import { Modal } from '../components/Modal'
@@ -39,8 +41,7 @@ export default function AddRecord({
 				setAddOpen(false)
 				setCurrentRecordID(-1)
 				setStage(Stage.LIST)
-			}}
-		>
+			}}>
 			{stage === Stage.LIST && <List search={search} setCurrentRecordID={setCurrentRecordID} />}
 			{stage === Stage.CONFIRM && <Confirm setStage={setStage} record_id={currentRecordID} />}
 		</Modal>

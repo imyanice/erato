@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+
 import type { SearchResponse } from '@/types/api'
 
 const fetcher = (...args: Parameters<typeof fetch>) => fetch(...args).then((res) => res.json())

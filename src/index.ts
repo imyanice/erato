@@ -11,6 +11,7 @@ if (
 
 import { serve } from 'bun'
 import * as mongoose from 'mongoose'
+
 import * as discogsFetchHandler from './api/fetch'
 import * as recordsHandler from './api/records'
 import * as scrobblingHandler from './api/scrobblingHandler'
@@ -27,7 +28,7 @@ export const CONSTANTS = {
 	mongo: process.env.MONGO_URL,
 	discogs: process.env.DISCOGS_KEY,
 } as const
-mongoose.connect(CONSTANTS.mongo).then(() => console.log('mongo connected'))
+await mongoose.connect(CONSTANTS.mongo).then(() => console.log('mongo connected'))
 
 const server = serve({
 	hostname: '0.0.0.0',

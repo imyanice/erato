@@ -1,5 +1,6 @@
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
+
 import type { RecordType } from '@/db/schema'
 
 const fetcher = (...args: Parameters<typeof fetch>) => fetch(...args).then((res) => res.json())

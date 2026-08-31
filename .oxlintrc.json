@@ -1,0 +1,32 @@
+{
+	"$schema": "https://raw.githubusercontent.com/oxc-project/oxc/281fde37b3741f93976e9b7d01e4795afe61de36/npm/oxlint/configuration_schema.json",
+	"options": {
+		"typeAware": true
+	},
+	"categories": {
+		"correctness": "error"
+	},
+	"plugins": ["import", "typescript"],
+	"rules": {
+		"typescript/consistent-type-imports": [
+			"warn",
+			{
+				"prefer": "type-imports",
+				"fixStyle": "separate-type-imports"
+			}
+		],
+		"eqeqeq": [
+			"error",
+			"always",
+			{
+				"null": "ignore"
+			}
+		],
+		"import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+		"prefer-template": "warn",
+		"typescript/no-unnecessary-template-expression": "error",
+		"no-template-curly-in-string": "error",
+		"unicorn/no-empty-file": "off",
+		"unicorn/no-new-array": "allow"
+	}
+}
