@@ -195,6 +195,9 @@ export function RecordList({
 					</>
 				)
 			})}
+			<div className='flex flex-col justify-center items-center pt-4'>
+			  {records.length} Records
+			</div>
 		</div>
 	)
 }
